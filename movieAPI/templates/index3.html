@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+Movie time
+{% endblock title %}
+
+{% block body %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <p class="display-3">{{data.fullTitle}}</p>
+        <p></p>
+        <p>{{data.runtimeStr}}</p>
+        <p>{{data.plot}}</p>
+        <p>{{data.awards}}</p>
+        {% for writer in data.writerList %}
+        <p>{{writer.name}}</p>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock body %}
