@@ -36,7 +36,7 @@ def register_view(request):
             print(user)
             login(request, user)
             print(user.username)
-            return redirect('home')
+            return redirect('search')
             # if you do want to login the user directly after registration, comment out the three lines above,
             # save the form data and then redirect the user to login page so that after registration the user can enter the credentials
             # form.save()
@@ -71,7 +71,7 @@ def login_view(request):
         #print(user.password)
         if user is not None:
             login(request,user)
-            return redirect('home')
+            return redirect('search')
             print(request.POST['username'])
         
         # check whether it's valid:
