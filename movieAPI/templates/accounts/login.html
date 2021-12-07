@@ -16,7 +16,7 @@ Auto Generated Form inside a card Body
     <div class="col-6">
         <div class="card mb-3">
             <div class="card-body">
-                <h1 >Login</h1>
+                <h1 class="text-center">Login</h1>
                 <form action="{% url 'login' %}" method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
@@ -29,10 +29,7 @@ Auto Generated Form inside a card Body
                         <hr>
                         <a href="{% url 'register' %}" class="btn btn-danger btn-lg"><i class="fas fa-plus"></i> Create a new account</a>
                     </div>
-
                 </form>
-
-
             </div>
         </div>
     </div>
