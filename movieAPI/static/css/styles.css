@@ -6,10 +6,12 @@ nav{
   position: fixed;
   top: 0;
   width: 100%;
-  overflow: hidden;
 }
 body{
   background-color: #cccccc;
+}
+.bottom-element{
+  margin-bottom: 8rem;
 }
 .no-resize{
   resize: none;    

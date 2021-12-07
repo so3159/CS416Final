@@ -7,35 +7,29 @@ Movie time
 
 {% block body %}
 
-<div class="row justify-content-center">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-body">
-                <h1>View Profile: {{profile.user.username}}</h1>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Username</li>
-                                <li class="list-group-item">First name</li>
-                                <li class="list-group-item">Last name</li>
-                              </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">{{profile.user.username}}</li>
-                                <li class="list-group-item">{{profile.first_name}}</li>
-                                <li class="list-group-item">{{profile.last_name}}</li>
-                              </ul>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card shadow border border-danger border-1 rounded my-2 p-4">
+                <div class="card-body">
+                    <h1>View Profile: {{profile.user.username}}</h1>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Username</li>
+                                    <li class="list-group-item">First name</li>
+                                    <li class="list-group-item">Last name</li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">{{profile.user.username}}</li>
+                                    <li class="list-group-item">{{profile.first_name}}</li>
+                                    <li class="list-group-item">{{profile.last_name}}</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                    
-
-
-
-                    
-
                     <div class="d-grid gap-2 my-3 ">
                         {% comment %}
                         more info visit: https://getbootstrap.com/docs/5.1/components/buttons/#block-buttons
@@ -46,43 +40,40 @@ Movie time
                         <hr>
                         <a href="{% url 'addListName' %}" class="btn btn-danger btn-lg"><i class="fas fa-plus"></i>Add List Name</a>
                     </div>
-
-
-
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-        <form action="{% url 'view_list' %}" method="post">
-            <div class="form-group">
-                {% csrf_token %}
-                <label for="Lists">Available Lists</label>
-                <select name="list_name" id="Lists">
-                    {% for list in lists %}
-                        <option >{{list.name}}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit">See List</button>
-            </div>
-        </form>
-    </div>
-</div>
-{% if list %}
-    {% for movie in list %}
-    <div class="row justify-content-center">
-        <div class="col-lg-2">
-            {{movie.title}}
-        </div>
+    <div class="row justify-content-center my-3">
         <div class="col-lg-8">
-
+            <form action="{% url 'view_list' %}" method="post">
+                <div class="form-group text-center">
+                    {% csrf_token %}
+                    <label for="Lists">Available Lists</label>
+                    <select name="list_name" id="Lists">
+                        {% for list in lists %}
+                            <option >{{list.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">See List</button>
+                </div>
+            </form>
         </div>
     </div>
-    {% endfor %}
+    <div class="bottom-element">
+        {% if list %}
+            {% for movie in list %}
+            <div class="row justify-content-center">
+                <div class="col-lg-2">
+                    {{movie.title}}
+                </div>
+                <div class="col-lg-8">
 
-{% endif %}
+                </div>
+            </div>
+            {% endfor %}
 
-
+        {% endif %}
+    </div>
 {% endblock body %}

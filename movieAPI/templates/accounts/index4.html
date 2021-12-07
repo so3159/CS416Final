@@ -12,22 +12,22 @@ Movie time
         {% comment %}
         Two buttons with Sign in and Register Page Functionality
         {% endcomment %}
-        <div class="card text-center my-3">
+        <div class="card text-center shadow border border-danger border-1 rounded my-3">
             <div class="card-header">Create or log into your account to view your favorite movie's details, create movie lists, keep track of which movies you've watched!</div>
             <div class="card-body">
                 <h5 class="card-title display-3">Create An Account or Sign In</h5>
                 <p class="card-text">Use the buttons below to log in or easily register for an account!</p>
                 <div class="d-flex justify-content-around">
-                    <a href="{% url 'login' %}" class="btn btn-danger px-4" type='submit'>Sign In</a>
                     <a href="{% url 'register' %}" class="btn btn-danger px-4" >Register</a>    
+                    <a href="{% url 'login' %}" class="btn btn-danger px-4" type='submit'>Sign In</a>
                 </div>
             </div>
-            <div class="card-footer text-muted">
+<!--            <div class="card-footer text-muted">
                 2 days ago
-            </div>
+            </div> -->
         </div>
 
-        <div class="my-4">
+        <div class="mt-4 shadow-lg border border-danger border-1 rounded bottom-element">
             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
