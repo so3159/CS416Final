@@ -11,7 +11,7 @@ Movie time
     <div class="col-6">
         <div class="card">
             <div class="card-body">
-                <h1 >View Profile: {{profile.user.username}}</h1>
+                <h1>View Profile: {{profile.user.username}}</h1>
                 <div class="container">
                     <div class="row">
                         <div class="col-6">
@@ -40,11 +40,11 @@ Movie time
                         {% comment %}
                         more info visit: https://getbootstrap.com/docs/5.1/components/buttons/#block-buttons
                         {% endcomment %}
-                        <a class="btn btn-primary btn-lg" href="{% url 'edit_profile' %}"><i class="fas fa-sign-in-alt"></i> Edit Profile</a>
+                        <a class="btn btn-danger btn-lg" href="{% url 'edit_profile' %}"><i class="fas fa-sign-in-alt"></i> Edit Profile</a>
                         <hr>
-                        <a href="{% url 'search' %}" class="btn btn-success btn-lg"><i class="fas fa-plus"></i> Go Back to Home</a>
+                        <a href="{% url 'search' %}" class="btn btn-secondary btn-lg"><i class="fas fa-plus"></i> Go Back to Home</a>
                         <hr>
-                        <a href="{% url 'addListName' %}" class="btn btn-success btn-lg"><i class="fas fa-plus"></i>Add List Name</a>
+                        <a href="{% url 'addListName' %}" class="btn btn-danger btn-lg"><i class="fas fa-plus"></i>Add List Name</a>
                     </div>
 
 
