@@ -90,7 +90,7 @@ def login_view(request):
 def view_profile(request):
     user = request.user.id
     profile = Profile.objects.get(user__id = user)
-    lists = List.objects.all().order_by('id').reverse()
+    lists = List.objects.filter(profile=profile).order_by('id').reverse()
 
     
     context = {

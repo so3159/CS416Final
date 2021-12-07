@@ -7,6 +7,8 @@ from movie.forms import ListForm
 from accounts.models import Profile
 from movie.models import Movie, List
 
+from django.db.models import Count
+
 import requests
 # Create your views here.
 @login_required(login_url='login')
@@ -76,7 +78,7 @@ def addListName(request):
     
     if request.method == "POST":
         if form.is_valid():
-            
+            form.instance.profile = profile
             form.save()
             
             context ={
@@ -117,43 +119,45 @@ def addMoviesToList(request):
             print("I Am Here")
             ##print(Movie.objects.get(imbd_id=x))
             
-            print("movie Already excists")
             #!!!!!!movie = Movie.objects.get(imbd_id=x)
+            if Movie.objects.filter(imbd_id=x).count() == 0:                
+                imbd_id = x
                 
-            imbd_id = x
-            
-            API_KEY= "k_tx163xr6"
+                API_KEY= "k_tx163xr6"
+                    
+                url = f'https://imdb-api.com/en/API/Title/{API_KEY}/{imbd_id}/FullActor,Posters,Images,Trailer,Ratings,Wikipedia,'
+                    
+                headers= {
+                    "Authorization": f"Bearer {API_KEY}"
+                }
                 
-            url = f'https://imdb-api.com/en/API/Title/{API_KEY}/{imbd_id}/FullActor,Posters,Images,Trailer,Ratings,Wikipedia,'
+                response = requests.get(url,headers=headers)
+                data = response.json()
+                #print(data)
+                title = data['title']
+                year = data['year']
+                runtime= data['runtimeStr']
+                rated = data['imDbRating']
+                plot = data['plot']
+                awards = data['awards']
+                directors = data['directors']
+                stars = data['stars']
+                genres = data['genres']
+                trailers = data['trailer']
+                trailer = trailers['linkEmbed']
+                #print(trailer)
+                #print(trailer['link'])
+                #Fix Trailer
+                released= data['releaseDate']
+                poster = data['image']
                 
-            headers= {
-                "Authorization": f"Bearer {API_KEY}"
-            }
-            
-            response = requests.get(url,headers=headers)
-            data = response.json()
-            #print(data)
-            title = data['title']
-            year = data['year']
-            runtime= data['runtimeStr']
-            rated = data['imDbRating']
-            plot = data['plot']
-            awards = data['awards']
-            directors = data['directors']
-            stars = data['stars']
-            genres = data['genres']
-            trailers = data['trailer']
-            trailer = trailers['linkEmbed']
-            #print(trailer)
-            #print(trailer['link'])
-            #Fix Trailer
-            released= data['releaseDate']
-            poster = data['image']
-            
-            #print(f'{title}  {year}  {runtime}  {rated} {plot} {awards} {directors} {stars} {genres} {released} {poster} ')
-        
-            movie = Movie.objects.create(imbd_id =imbd_id, title = title, year = year, Runtime= runtime, Plot = plot, Awards = awards, Directors = directors, Stars = stars, Genres = genres, Rating = rated, Trailer = trailer, Released = released, Poster = poster)
-            
+                #print(f'{title}  {year}  {runtime}  {rated} {plot} {awards} {directors} {stars} {genres} {released} {poster} ')
+
+                movie = Movie.objects.create(imbd_id =imbd_id, title = title, year = year, Runtime= runtime, Plot = plot, Awards = awards, Directors = directors, Stars = stars, Genres = genres, Rating = rated, Trailer = trailer, Released = released, Poster = poster)
+            else:     
+                print("movie Already excists")
+                movie = Movie.objects.get(imbd_id=x)
+
             list.movies.add(movie)
         # user = request.user
         # profile = Profile.objects.get(user=user)
