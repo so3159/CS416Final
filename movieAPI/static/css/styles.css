@@ -1,0 +1,33 @@
+html{
+  position: relative;
+  min-height: 100%;
+}
+nav{
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+body{
+  background-color: #cccccc;
+}
+.bottom-element{
+  margin-bottom: 8rem;
+}
+.no-resize{
+  resize: none;    
+}
+.section-heading{
+  font-size: 1.4rem;
+  padding-bottom: 0.3rem;
+}
+input[type="text"]{
+  font-size: 0.8rem;
+}
+::placeholder{
+  font-size: 0.8rem;
+}
+footer{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
