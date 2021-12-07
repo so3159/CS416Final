@@ -1,8 +1,10 @@
 from django.db import models
 
-
+from accounts.models import Profile
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
+
+from accounts.models import Profile
 # Create your models here.
 
 #movie Model
@@ -31,6 +33,7 @@ class Movie(models.Model):
 
 
 class List(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     movies = models.ManyToManyField(Movie, blank=True)
     

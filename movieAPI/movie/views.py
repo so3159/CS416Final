@@ -78,7 +78,7 @@ def addListName(request):
     
     if request.method == "POST":
         if form.is_valid():
-            
+            form.instance.profile = profile
             form.save()
             
             context ={
