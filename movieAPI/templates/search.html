@@ -1,0 +1,105 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+Movie time
+{% endblock title %}
+
+{% block body %}
+<!-- 
+
+    Row with 3 Buttons That Have Functionality as follows
+    Search for movies: form submit movie/search function. Redirects to index2.html
+    Edit profile: url accounts/edit_profile, redirects to functional edit_profile.html
+    Logout: url accounts/logout, redirects to index4.html (login or signup page)
+
+ -->
+<div class="row justify-content-center">
+    <div class="col-lg-2">
+        <p><a href='{% url 'addListName' %}'  class="btn btn-success btn-lg" >Add A List Name</a></p>
+    </div>    
+
+    <div class="col-lg-2">
+        <p><a href='{% url 'edit_profile' %}'  class="btn btn-success btn-lg" >Click me to edit your profile</a></p>
+    </div>    
+    <div class="col-lg-2">
+        <a href="{% url 'view_profile' %}" class="btn btn-success btn-lg"><i class="fas fa-plus"></i>View Profile</a>
+    </div>
+    <div class="col-lg-2">
+        <a href="{% url 'logout' %}" class="btn btn-success btn-lg"><i class="fas fa-plus"></i> Logout</a>
+    </div>
+    
+</div>
+
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <p class="display-4">Choose Your List and Search For Movies To Add To It</p>
+        <div class="row">
+            <div class="col-lg-10">        
+                <form action="{% url 'results' %}" method="post">
+                    {% csrf_token %}
+                    <class="form-group">
+                    <label for="exampleFormControlSelect1">List Name</label>
+                    <select class="form-control" name='list_name' id="exampleFormControlSelect1">
+                    {% if list_name %}
+                    <option>{{list_name}}</option>
+                        {% for list in lists %}
+                            {% if list.name != list_name %}
+                                <option>{{list.name}}</option>
+                            {% endif %}
+                        
+                        {% endfor %}
+                    {% else %}
+                        {% for list in lists %}
+                        <option>{{list.name}}</option>
+                        {% endfor %}
+                    {% endif %}
+                    
+
+                    </select>
+                    <label for="search_term">Search For Movies to ad to {{form.data.name}} </label>
+                    <input type="text" class='form-control' id='search_term' name='search_term' value="{{search_term}}" placeholder='e.g  "Batman" , "Inception" '>
+                    <small id='search_term' class="form-text text-muted">Think Action</small>
+            </div>
+            <div class="col-lg-2">
+                    <button class="btn btn-success btn-lg" type='submit'>Click me Search For Movies</button> 
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% if results %}
+    <form action="{% url 'addMoviesToList' %}" method="POST" name="moviesToAdd" id="moviesToAdd">
+        {% csrf_token %}
+        <input type="text" name="search_term" value="{{search_term}}" class="disabled invisible" id="">
+        <input type="text" name="list_name" value="{{list_name}}" class="disabled invisible" id="">
+<div class="row justify-content-center">
+
+
+{% for result in results %}
+
+<div class="col-lg-2">
+    <div class="card">
+        <a href="{% url 'movieDetails' result.id %}"><img src="{{result.image}}" alt="picture" class="card-img-top"></a>
+        <div class="card-body">
+            <h5 class="card-title">{{result.title}}</h5>
+            <p class="card-text">{{result.description}}</p>
+            <input class="form-check-input" type="checkbox" value="{{result.id}}" name="movies" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Add To List
+            </label>
+            {% comment %} <a href="{% url 'addMovieToWatched' result.id %}">Click Me to Add</a> {% endcomment %}
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+</div>
+    <button type="submit">Add Movies Selected Movies to {{list_name}}</button>
+</form>
+    {% endif %}
+
+
+
+{% endblock body %}

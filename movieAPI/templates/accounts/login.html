@@ -7,12 +7,17 @@ Movie time
 
 {% block body %}
 
+{% comment %} 
+
+Auto Generated Form inside a card Body
+
+{% endcomment %}
 <div class="row justify-content-center">
     <div class="col-6">
         <div class="card">
             <div class="card-body">
                 <h1 >Login</h1>
-                <form action="{% url 'login' %}" method="post" novalidate>
+                <form action="{% url 'login' %}" method="post" >
                     {% csrf_token %}
                     {{ form|crispy }}
 

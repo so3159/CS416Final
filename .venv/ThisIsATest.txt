@@ -1,2 +1,0 @@
-{\rtf1}
-This is now a non emtpy file
