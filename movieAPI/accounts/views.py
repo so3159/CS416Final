@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 #import User From Auth
 from django.contrib.auth.models import User
 from accounts.models  import Profile
-from movie.models import Movie
+from movie.models import Movie, List
 from accounts.forms import EditProfileForm, UserRegistrationForm
 
 
@@ -90,12 +90,34 @@ def login_view(request):
 def view_profile(request):
     user = request.user.id
     profile = Profile.objects.get(user__id = user)
+    lists = List.objects.all().order_by('id').reverse()
+
     
     context = {
         'profile' : profile,
+        'lists':lists
         
     }
     return render(request, 'accounts/profile.html', context)
+
+@login_required(login_url='login')
+def view_list(request):
+    user = request.user.id
+    profile = Profile.objects.get(user__id = user)
+    lists=List.objects.all().order_by('id').reverse()
+    
+    
+    if request.method == 'POST':
+        list_name = request.POST['list_name']
+        list=List.objects.get(name= list_name)
+        movies = list.movies.all()
+        
+        context = {
+            'list' : movies,
+            'profile':profile,
+            'lists':lists,
+        }
+        return render(request, 'accounts/profile.html',context)
 
 @login_required(login_url='login')
 def edit_profile(request): 
@@ -132,3 +154,4 @@ def edit_profile(request):
     
 def index(request):
     return render(request, 'accounts/index4.html')
+

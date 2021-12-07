@@ -10,6 +10,14 @@ Movie time
     <div class="col-lg-10">
         <p class="display-3">Successfully Did that</p>
     </div>
+    <div class="col-lg-6">
+        <form action="{% url 'addMoviesToList' %}" method='POST'>
+            {% csrf_token %}
+            <input type="text">List Name:
+            <button type="submit" class="btn btn-success btn-lg"><i class="fas fa-plus"></i> Add Movie To List</button>
+        </form>
+        
+    </div>
 </div>
 <div class="row justify-content-center">
     {% for result in results %}
@@ -27,8 +35,17 @@ Movie time
 
 
 
+
     {% endfor %}
+
+
 
 </div>
 
 {% endblock body %}
+
+{% comment %} 
+<div class="form-check">
+  <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+</div>
+{% endcomment %}
