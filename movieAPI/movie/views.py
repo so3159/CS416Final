@@ -11,22 +11,24 @@ from django.db.models import Count
 
 import requests
 # Create your views here.
-@login_required(login_url='login')
+@login_required(login_url='index')
 def search(request):
-    
-    lists = List.objects.all().order_by('id').reverse()
+    user = request.user.id
+    profile = Profile.objects.get(user__id=user)
+    lists = List.objects.filter(profile=profile).order_by('id').reverse()
     
     return render(request, 'search.html',{'lists':lists})
 
-@login_required(login_url='login')
+@login_required(login_url='index')
 def results(request):
-    
+    user = request.user.id
+    profile = Profile.objects.get(user__id=user)
     if request.method == 'POST':
         search_term = request.POST.get('search_term')
         listname= request.POST.get('list_name')
         print(listname)
         
-        lists = List.objects.all().order_by('id').reverse()
+        lists = List.objects.filter(profile=profile).order_by('id').reverse()
         
         API_KEY= "k_tx163xr6"
         
@@ -100,12 +102,19 @@ def addListName(request):
 
 
 def addMoviesToList(request):
-    
+    user = request.user.id
+    profile = Profile.objects.get(user__id = user)
     if request.method == "POST":
-        
         movies = request.POST.getlist('movies')
         list_name = request.POST.get('list_name')
-        list = List.objects.get(name=list_name)
+        print("Hello Am Here")
+        print(List.objects.filter(profile=profile).count)
+        if List.objects.filter(profile=profile).count() == 0:
+            list = List.objects.create(profile = profile, name = 'My List 1')
+        else:    
+            list = List.objects.filter(profile=profile).filter(name=list_name)
+
+
         #print(list)
         
         searchTerm = request.POST.get('search_term')

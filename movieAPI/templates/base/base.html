@@ -27,10 +27,10 @@
             <div class="collapse navbar-collapse justify-content-between" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{% url 'search' %}">Home <span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Sign In</a>
+                        <a class="nav-link" href="{% url 'search' %}">Search</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
@@ -43,10 +43,12 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{% url 'view_profile' %}">View Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a></li>
+                                <li class=""><a class="dropdown-item" href="{% url 'login' %}">Sign In</a></li>
+                                <li class=""><a class="dropdown-item" href="{% url 'register' %}">Sign Up</a></li>
                             </ul>
                       </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="{% url 'logout' %}">Log out</a>
+                        <a class="nav-link {% if user.is_authenticated %} {% else %}disabled{% endif %}" href="{% url 'logout' %}">Log out</a>
                     </li>
                 </ul>
                 <div class="col-5">

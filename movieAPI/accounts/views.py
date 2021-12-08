@@ -21,18 +21,11 @@ def register_view(request):
     if request.method == 'POST':
         
         
-        form = UserRegistrationForm(request.POST or None)
+        form = UserCreationForm(request.POST or None)
         if form.is_valid():
-            
-            username=form.cleaned_data.get('username')
-            first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
-            password = form.cleaned_data.get('password')
-            
-            user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, password=password)
+            user = form.save()
             # if you want to login the user directly after registration, use the following three lines,
             # which login the user and redirect to index
-            user.save()
             print(user)
             login(request, user)
             print(user.username)
@@ -43,7 +36,7 @@ def register_view(request):
             # return redirect('login')
     else:
         #create empty Instance of Djangos Form to generate html
-        form= UserRegistrationForm()
+        form= UserCreationForm()
         
     return render(request, 'accounts/register.html', {'form': form})
             
@@ -58,35 +51,25 @@ def login_view(request):
     # this function authenticates the user based on username and password
     # AuthenticationForm is a form for logging a user in.
     # if the request method is a post
-    
-    form = AuthenticationForm(data=request.POST or None)
     if request.method == 'POST':
         # Plug the request.post in AuthenticationForm
+        form = AuthenticationForm(data=request.POST)
         
-        username= request.POST['username']
-        password = request.POST['password']
-        #print(request.POST['password'])
-        user = User.objects.get(username=username)
-
-        #print(user.password)
-        if user is not None:
-            login(request,user)
-            return redirect('search')
-            print(request.POST['username'])
-        
-        # check whether it's valid:
         if form.is_valid():
             print('also here')
             # get the user info from the form data and login the user
             user = form.get_user()
             login(request, user)
-            
             # redirect the user to index page
-            return redirect('index')
+            return redirect('search')
+        else:
+            return render(request,'accounts/login.html', {'form':form})
+    
+    form = AuthenticationForm()
 
     return render(request, 'accounts/login.html', {'form': form})
 
-@login_required(login_url='login')
+@login_required(login_url='index')
 def view_profile(request):
     user = request.user.id
     profile = Profile.objects.get(user__id = user)
@@ -100,7 +83,7 @@ def view_profile(request):
     }
     return render(request, 'accounts/profile.html', context)
 
-@login_required(login_url='login')
+@login_required(login_url='index')
 def view_list(request):
     user = request.user.id
     profile = Profile.objects.get(user__id = user)
@@ -119,7 +102,7 @@ def view_list(request):
         }
         return render(request, 'accounts/profile.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='index')
 def edit_profile(request): 
     
     user = request.user.id
