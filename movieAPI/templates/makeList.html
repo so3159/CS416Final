@@ -7,23 +7,27 @@ Movie time
 {% endblock title %}
 
 {% block body %}
-
 <div class="row justify-content-center">
     <div class="col-lg-10">
-        <p class="display-3">Add List Title</p>
-        <p></p>
-
-        <!--
-            
-            Uses search function from movie.urls
-            
-         -->
-        <form action="" method="post">
-            {% csrf_token %}
-            {{form|crispy}}
-            <button type='submit' class='btn btn-success'>Make List Name</button>
-        </form>
-        {% comment %} 
-        add form with current list names and submit with redirect called choose current lists
-        {% endcomment %}
+        <div class="card shadow-lg border border-danger border-1 rounded mt-3 bottom-element px-4 py-3">
+            <div class="card-body">
+                <h1 class="text-center">Create A List</h1>
+                <form action="" method="post" class="d-flex justify-content-between">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <button type='submit' class='btn btn-danger'>Create List</button>
+                </form>
+                
+                <!--
+                    
+                    Uses search function from movie.urls
+                    
+                -->
+                {% comment %} 
+                add form with current list names and submit with redirect called choose current lists
+                {% endcomment %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock body %}
