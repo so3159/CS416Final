@@ -18,6 +18,8 @@
         </title>
     </head>
     <body>
+
+        {% if user.is_authenticated %} 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 mb-4">
             <a class="navbar-brand text-danger" href="#">Netlists</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,15 +29,11 @@
             <div class="collapse navbar-collapse justify-content-between" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'index' %}">Home</a> <!-- home = http://127.0.0.1:8000/movie/search/ -->
+                        <a class="nav-link" href="{% url 'search' %}">Home</a> <!-- home = http://127.0.0.1:8000/movie/search/ -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Sign In</a>
+                        <a class="nav-link" href="{% url 'addListName' %}">Create List</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
-                    </li>
-            <!-- and IF logged in, enable links, ELSE/on logout, disable-->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'view_profile' %}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                           Profile
@@ -46,7 +44,7 @@
                             </ul>
                       </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="{% url 'logout' %}">Log out</a>
+                        <a class="nav-link" href="{% url 'logout' %}">Log out</a>
                     </li>
                 </ul>
                 <div class="col-5">
@@ -59,6 +57,47 @@
                 </div>
             </div>
         </nav>
+        {% else %}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 mb-4">
+            <a class="navbar-brand text-danger" href="#">Netlists</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarTogglerDemo02">
+                <ul class="navbar-nav mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle disabled" href="{% url 'view_profile' %}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Profile
+                        </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{% url 'view_profile' %}">View Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a></li>
+                            </ul>
+                      </li>
+
+                </ul>
+                <div class="col-5">
+                    <div class="input-group my-2">
+                        <input type="search" class="form-control mr-sm-2" placeholder="Register/Login to Search..." aria-label="Search" aria-describedby="basic-addon2" readonly>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger disabled" type="submit">Search</button>
+                        </div>
+                    </div>                      
+                </div>
+            </div>
+        </nav>
+        {% endif %}"
+        
         <div class="container">          
             {% block body %}
             {% endblock body %}
