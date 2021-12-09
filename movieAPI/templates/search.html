@@ -13,56 +13,44 @@ Movie time
     Logout: url accounts/logout, redirects to index4.html (login or signup page)
 
  -->
-<div class="row justify-content-center">
-    <div class="col-lg-2">
-        <p><a href="{% url 'addListName' %}"  class="btn btn-danger btn-lg" >Create List</a></p>
-    </div>    
-    <div class="col-lg-2">
-        <p><a href="{% url 'edit_profile' %}"  class="btn btn-danger btn-lg" >Edit Profile</a></p>
-    </div>    
-    <div class="col-lg-2">
-        <a href="{% url 'view_profile' %}" class="btn btn-danger btn-lg"><i class="fas fa-plus"></i>View Profile</a>
-    </div>
-    <div class="col-lg-2">
-        <a href="{% url 'logout' %}" class="btn btn-danger btn-lg"><i class="fas fa-plus"></i> Logout</a>
-    </div>
-    
-</div>
-
 
 <div class="row justify-content-center">
     <div class="col-lg-10">
-        <p class="display-4">Choose Your List and Search For Movies To Add To It</p>
-        <div class="row">
-            <div class="col-lg-10">        
-                <form action="{% url 'results' %}" method="post">
-                    {% csrf_token %}
-                    <class="form-group">
-                    <label for="exampleFormControlSelect1">List Name</label>
-                    <select class="form-control" name='list_name' id="exampleFormControlSelect1">
-                    {% if list_name %}
-                    <option>{{list_name}}</option>
-                        {% for list in lists %}
-                            {% if list.name != list_name %}
-                                <option>{{list.name}}</option>
-                            {% endif %}
-                        
-                        {% endfor %}
-                    {% else %}
-                        {% for list in lists %}
-                        <option>{{list.name}}</option>
-                        {% endfor %}
-                    {% endif %}
-                    
+        <div class="card text-center shadow border border-danger border-1 rounded my-3">
+            <div class="card-header">Choose Your List and Search for Movies to Add to it</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-10">        
+                        <form action="{% url 'results' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1" class="mb-1">List Name</label>
+                                <select class="form-control" name='list_name' id="exampleFormControlSelect1">
+                                {% if list_name %}
+                                <option>{{list_name}}</option>
+                                    {% for list in lists %}
+                                        {% if list.name != list_name %}
+                                            <option>{{list.name}}</option>
+                                        {% endif %}
+                                    
+                                    {% endfor %}
+                                {% else %}
+                                    {% for list in lists %}
+                                    <option>{{list.name}}</option>
+                                    {% endfor %}
+                                {% endif %}
+                                
 
-                    </select>
-                    <label for="search_term">Search For Movies to ad to {{form.data.name}} </label>
-                    <input type="text" class='form-control' id='search_term' name='search_term' value="{{search_term}}" placeholder='e.g  "Batman" , "Inception" '>
-                    <small id='search_term' class="form-text text-muted">Think Action</small>
-            </div>
-            <div class="col-lg-2">
-                    <button class="btn btn-danger btn-lg" type='submit'>Click me Search For Movies</button> 
-                </form>
+                                </select>
+                            <label for="search_term" class="mt-3 mb-1">Search for Movies to Add</label> <!-- to {{ form.data.name }} -->
+                            <input type="text" class='form-control mb-3' id='search_term' name='search_term' value="{{search_term}}" placeholder='e.g  "Batman" , "Inception" '>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                            <button class="btn btn-danger btn-lg" type='submit'>Click me Search For Movies</button> 
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
