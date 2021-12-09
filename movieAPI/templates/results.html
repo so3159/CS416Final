@@ -22,7 +22,7 @@ Movie time
 <div class="row justify-content-center">
     {% for result in results %}
     
-    <div class="col-lg-2">
+    <div class="col-lg-4 border border-3 border-danger">
         <div class="card">
             <a href="{% url 'movieDetails' result.id %}"><img src="{{result.image}}" alt="picture" class="card-img-top"></a>
             <div class="card-body">

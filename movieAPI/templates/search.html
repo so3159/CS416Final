@@ -17,37 +17,55 @@ Movie time
 <div class="row justify-content-center">
     <div class="col-lg-10">
         <div class="card text-center shadow border border-danger border-1 rounded my-3">
-            <div class="card-header">Choose Your List and Search for Movies to Add to it</div>
+            <div class="card-header"><strong>Choose List and Search for Movies</strong></div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-10">        
+                    <div class="col-lg-12">
                         <form action="{% url 'results' %}" method="post">
                             {% csrf_token %}
-                            <div class="form-group">
+                        <div class="row">
+                            
+                            <div class="col-lg-6">
+                                <div class="form-group">
                                 <label for="exampleFormControlSelect1" class="mb-1">List Name</label>
-                                <select class="form-control" name='list_name' id="exampleFormControlSelect1">
+                                <select class="form-control  border border-2 border-dark" name='list_name' id="exampleFormControlSelect1">
                                 {% if list_name %}
+                                
                                 <option>{{list_name}}</option>
                                     {% for list in lists %}
                                         {% if list.name != list_name %}
                                             <option>{{list.name}}</option>
                                         {% endif %}
-                                    
-                                    {% endfor %}
+                                        {% endfor %}
                                 {% else %}
                                     {% for list in lists %}
                                     <option>{{list.name}}</option>
                                     {% endfor %}
                                 {% endif %}
+                                </select>
+                            </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="search_term" class=" mb-1">Search for Movies to Add</label> <!-- to {{ form.data.name }} -->
+                                    <input type="text" class='form-control border border-2 border-dark' id='search_term' name='search_term' value="{{search_term}}" placeholder='e.g  "Batman" , "Inception" '>
+                                </div>
+                                
+                            </div>
+                        </div>        
+                        
+                            
+                            
+                                    
+                                    
                                 
 
-                                </select>
-                            <label for="search_term" class="mt-3 mb-1">Search for Movies to Add</label> <!-- to {{ form.data.name }} -->
-                            <input type="text" class='form-control mb-3' id='search_term' name='search_term' value="{{search_term}}" placeholder='e.g  "Batman" , "Inception" '>
-                        </div>
+                                
+                            
+                        
                     </div>
-                    <div class="col-lg-2">
-                            <button class="btn btn-danger btn-lg" type='submit'>Click me Search For Movies</button> 
+                    <div class="col-lg-12">
+                            <button class="btn btn-danger mt-2" type='submit'>Click me Search For Movies</button> 
                         </form>
                     </div>
                 </div>
@@ -65,12 +83,13 @@ Movie time
 
 {% for result in results %}
 
-<div class="col-lg-2">
-    <div class="card">
+<div class="col-lg-3 p-0 mx-2 my-4 bg-white border border-1 border-danger">
+    <div class="card p-0 m-0">
         <a href="{% url 'movieDetails' result.id %}"><img src="{{result.image}}" alt="picture" class="card-img-top"></a>
         <div class="card-body">
-            <h5 class="card-title">{{result.title}}</h5>
-            <p class="card-text">{{result.description}}</p>
+            <h5 class="card-title"><strong>{{result.title}}</strong></h5>
+            <p class="card-text lead">{{result.description}}</p>
+            <p><small>{{result.year}}</small></p>
             <input class="form-check-input" type="checkbox" value="{{result.id}}" name="movies" id="flexCheckDefault">
             <label class="form-check-label" for="flexCheckDefault">
                 Add To List
