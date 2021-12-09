@@ -83,6 +83,7 @@ def view_profile(request):
 
     
     context = {
+        
         'profile' : profile,
         'lists':lists
         
@@ -103,6 +104,7 @@ def view_list(request):
         movies = list.movies.all()
         
         context = {
+            
             'list' : movies,
             'profile':profile,
             'lists':lists,
@@ -130,7 +132,7 @@ def edit_profile(request):
 
             context ={
                 'profile':profile,
-                'user':user,
+                
                 'form':form
             }
             return render(request,'accounts/edit_profile.html', context)
@@ -142,7 +144,7 @@ def edit_profile(request):
         context= {
             'form': form,
             'profile': profile,
-            'user':user
+            
         }
         
         return render(request, 'accounts/edit_profile.html', context)

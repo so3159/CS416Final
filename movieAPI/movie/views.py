@@ -206,14 +206,13 @@ def editListView(request):
     profile = Profile.objects.get(user = user)
     if request.method == 'POST':
         list_name = request.POST.get('list_name')
-        list= List.objects.get(name=list_name)
+        list=List.objects.filter(profile=profile).get(name=list_name)
         
         movies = list.movies.all()
         context = {
             
             'list_name':list_name,
             'list':movies,
-            'user':user,
             'profile':profile,
         }
 
@@ -228,14 +227,13 @@ def updateListName(request):
     if request.method == 'POST':
         list_name = request.POST.get('list_name')
         new_name = request.POST.get('new_list_name')
-        list = List.objects.get(name = list_name)
+        list=List.objects.filter(profile=profile).get(name=list_name)
         list.name = new_name
         list.save()
         movies = list.movies.all()
         context={
             'list_name':new_name,
             'list': movies,
-            'user':user,
             'profile':profile,
         }        
         messages.success(request, 'Successfully Updated List Name From:'+ list_name + ' to: ' + new_name +' !')
@@ -257,7 +255,7 @@ def deleteMovieFromList(request):
         list_name = request.POST.get('list_name')
         movie_id= request.POST.get('imbd_id')
         #get list object, get movie object 
-        list=List.objects.get(name=list_name)
+        list=List.objects.filter(profile=profile).get(name=list_name)
         movie = Movie.objects.get(imbd_id=movie_id)
         list.movies.remove(movie)
         movies = list.movies.all()
@@ -265,7 +263,6 @@ def deleteMovieFromList(request):
         context={
             'list_name':list_name,
             'list':movies,
-            'user':user,
             'profile':profile,
             
         }
@@ -285,7 +282,7 @@ def deleteList(request):
     
     if request.method == 'POST':
         list_name = request.POST.get('list_name')
-        list=List.objects.get(name=list_name)
+        list=List.objects.filter(profile=profile).get(name=list_name)
         list.delete()
         messages.warning(request, 'Successfully Deleted '  + list_name + '  !')
 
