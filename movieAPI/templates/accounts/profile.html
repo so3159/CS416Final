@@ -7,21 +7,21 @@ Movie time
 
 {% block body %}
 
-    <div class="row justify-content-center">
-        <div class="col-6">
-            <div class="card shadow border border-danger border-1 rounded my-2 p-4">
+    <div class="row">
+        <div class="col-4 mt-5">
+            <div class="card shadow border border-danger border-1  rounded">
                 <div class="card-body">
-                    <h1>View Profile: {{profile.user.username}}</h1>
+                    <h1 class='text-center'>View Profile:</h1>
                     <div class="container">
-                        <div class="row">
-                            <div class="col-6">
+                        <div class="row  border border-dark border-2 mb-2">
+                            <div class="col-6 text-center">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">Username</li>
                                     <li class="list-group-item">First name</li>
                                     <li class="list-group-item">Last name</li>
                                 </ul>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 text-center">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">{{profile.user.username}}</li>
                                     <li class="list-group-item">{{profile.first_name}}</li>
@@ -29,51 +29,115 @@ Movie time
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div class="d-grid gap-2 my-3 ">
-                        {% comment %}
-                        more info visit: https://getbootstrap.com/docs/5.1/components/buttons/#block-buttons
-                        {% endcomment %}
-                        <a class="btn btn-danger btn-lg" href="{% url 'edit_profile' %}"><i class="fas fa-sign-in-alt"></i> Edit Profile</a>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6 text-center">
+                                <a href="{% url 'edit_profile' %}" class="btn btn-danger  btn-outline-dark">Edit Profile</a>
+                
+                            </div>
+                            <div class="col-lg-6 text-center">
+                                <a href="{% url 'addListName' %}" class="btn btn-secondary text-white btn-outline-danger">Add List Name</a>
+                
+                            </div>
+
+                        </div>
                         <hr>
-                        <a href="{% url 'search' %}" class="btn btn-secondary btn-lg"><i class="fas fa-plus"></i> Go Back to Home</a>
-                        <hr>
-                        <a href="{% url 'addListName' %}" class="btn btn-danger btn-lg"><i class="fas fa-plus"></i>Add List Name</a>
+                        {% if not lists %}
+                        <p>You have no lists, Add one!</p>
+                        {% endif %}
+                        <div class="row border {% if not lists  %}  invisible {% endif %} border-dark border-2 p-2 text-center m-2">
+                            <form action="{% url 'editListView' %}" method="post">
+                                {% csrf_token %}
+                            <div class="input-group">    
+                                <select class="custom-select" name="list_name" id="Lists">
+                                    {% for list in lists %}
+                                            <option >{{list.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary text-white  btn-outline-danger" type="submit">Edit List</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="row justify-content-center my-3">
         <div class="col-lg-8">
-            <form action="{% url 'view_list' %}" method="post">
-                <div class="form-group text-center">
+            <div class="row {% if not lists  %}  invisible {% endif %}">
+                <form action="{% url 'view_list' %}" method="post">
                     {% csrf_token %}
-                    <label for="Lists">Available Lists</label>
-                    <select name="list_name" id="Lists">
+                <div class="input-group">    
+                    <select class="custom-select" name="list_name" id="Lists">
                         {% for list in lists %}
-                            <option >{{list.name}}</option>
+                                <option >{{list.name}}</option>
                         {% endfor %}
                     </select>
-                    <button type="submit">See List</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="bottom-element">
-        {% if list %}
-            {% for movie in list %}
-            <div class="row justify-content-center">
-                <div class="col-lg-2">
-                    {{movie.title}}
-                </div>
-                <div class="col-lg-8">
+                    <div class="input-group-append">
+                        <button class="btn btn-danger  btn-outline-dark" type="submit">View List</button>
+                    </div>
+                </form>
+                  </div>
+            </div>
 
+            {% if list %}
+            {% for movie in list %}
+            <div class="row justify-content-center my-2">
+                <div class="col-lg-12">
+
+                </div>
+                    
+                <div class="col-lg-12">
+                    <div class="card border-2 border-danger">                        
+                        <div class="card-header">{{movie.title}}<span> : ({{movie.year}})</span></div>
+
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <img src="{{movie.Poster}}" class="img-thumbnail border-danger border-3 p-0 m-lg-2" alt="Poster">
+                
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="card-body p-0  m-0">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <ul class="list-group list-group-flush p-0 m-0">
+                                                <li class="list-group-item p-0 m-0"><small>Runtime : {{movie.Runtime}}</small></li>
+                                                <li class="list-group-item font-monospace p-0 m-0 h6"><small>Genres : {{movie.Genres}}</small></li>
+                                                <li class="list-group-item font-monospace p-0 m-0 h6"><small>Directors : {{movie.Directors}}</small></li>
+                                                <li class="list-group-item font-monospace p-0 m-0 h6"><small>Stars : {{movie.Stars}}</small></li>
+                                                <li class="list-group-item font-monospace p-0 m-0 h6"><small>ImBd Rating : {{movie.Rating}}</small></li>
+                                                <li class="list-group-item font-monospace p-0 m-0 h6"><small>Awards : {{movie.Awards}}</small></li>
+
+
+                                                
+                                            </ul>
+                                        </div>
+                                        <div  class="col-lg-7 p-0">
+                                            <p class="h5 text-center">Plot</p>
+                                            <div style="height:120px;" class="overflow-auto border-1 border border-dark col m-4">
+                                                <p class="font-monospace "><small>{{movie.Plot}}</small></p>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        
+                    </div>
                 </div>
             </div>
             {% endfor %}
 
         {% endif %}
+            
+        </div>
     </div>
+
+    <div class="row justify-content-center my-3">
+        
+    </div>
+
 {% endblock body %}

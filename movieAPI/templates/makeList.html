@@ -10,19 +10,32 @@ Movie time
 
 <div class="row justify-content-center">
     <div class="col-lg-10">
-        <p class="display-3">Add List Title</p>
-        <p></p>
+        <p class="display-3 text-center">Add List Title</p>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body bg-light shadow border border-danger border-1 rounded">
+                <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name" class="text-black display-6 font-weight-font-weight-bold">List Name: </label>
+                    <input class="form-control form-control-lg border-2 border-dark" id="name" type="text" name="name" placeholder="Type Here... ('Top 10', 'Best Action Movies', 'Quentin Tarantino')">
+                    <small id="name" class="form-text text-black ">Add A Unique List Name</small>
+                </div>
+               
+                <button type='submit' class='btn btn-danger border-2 border-dark text-white font-weight-bold'>Make List Name</button>
+                </form>
+            </div>
+            
+            
+            
+        </div>
+    </div>
+</div>
 
-        <!--
-            
-            Uses search function from movie.urls
-            
-         -->
-        <form action="" method="post">
-            {% csrf_token %}
-            {{form|crispy}}
-            <button type='submit' class='btn btn-success'>Make List Name</button>
-        </form>
+        
         {% comment %} 
         add form with current list names and submit with redirect called choose current lists
         {% endcomment %}
