@@ -48,12 +48,16 @@
                     </li>
                 </ul>
                 <div class="col-5">
-                    <div class="input-group my-2">
-                        <input type="search" class="form-control mr-sm-2" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+                    <form action="{% url 'results' %}" method='POST'>
+                        {% csrf_token %}
+                        <div class="input-group my-2">
+                        <input type="search" name="search_term" class="form-control mr-sm-2"  placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                         <button class="btn btn-outline-danger" type="submit">Search</button>
                         </div>
-                    </div>                      
+                    </div>  
+                    </form>
+                                        
                 </div>
             </div>
         </nav>
@@ -98,7 +102,20 @@
         </nav>
         {% endif %}"
         
-        <div class="container">          
+        <div class="container"> 
+            <div class="row">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        {% if message.tags == 'warning' %}
+                        <div role="alert" {% if message.tags %} class="alert alert-danger"{% endif %}>{{ message }}</div>
+                        {% else %}
+                        <div role="alert" {% if message.tags %} class="alert alert-success"{% endif %}>{{ message }}</div>
+                        {% endif %}
+                        
+                    {% endfor %}
+                {% endif %}
+            </div>                  
             {% block body %}
             {% endblock body %}
         </div>

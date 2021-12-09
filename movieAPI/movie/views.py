@@ -55,7 +55,8 @@ def results(request):
     
     else:
         return render(request, 'index3.html')
-    
+
+@login_required(login_url='index')
 def movieDetails(request, id):
     id = id
     API_KEY= "k_tx163xr6"
@@ -71,29 +72,42 @@ def movieDetails(request, id):
     return render(request, 'index3.html' ,{'data' : data})
     
     
-
+@login_required(login_url='index')
 def addListName(request):
     form = ListForm(request.POST or None)
     user = request.user.id
     profile = Profile.objects.get(user__id = user)
-    lists = List.objects.all().order_by('id').reverse()
+    lists = List.objects.filter(profile=profile).order_by('id').reverse()
     
     #print(lists)
     
     if request.method == "POST":
+        
         if form.is_valid():
             form.instance.profile = profile
-            form.save()
-            
-            messages.success(request, 'Successfully Added List!')
+            name = request.POST.get('name')
 
-            context ={
-                'lists' :lists,
-                'profile':profile,
-                'form': form
-            }
-            #print(form.data.name)
-            return render(request,'search.html', context)
+            if List.objects.filter(profile=profile).filter(name=name).count() != 0:
+                messages.warning(request, 'You entered a List Name You have already!')
+                context ={
+                    'lists' :lists,
+                    'profile':profile,
+                    'form': form
+                }
+                #print(form.data.name)
+                return render(request,'makeList.html', context) 
+            else:
+                form.save()
+            
+                messages.success(request, 'Successfully Added List!')
+
+                context ={
+                    'lists' :lists,
+                    'profile':profile,
+                    'form': form
+                }
+                #print(form.data.name)
+                return render(request,'search.html', context)
     
     context={ 
              'form': form
@@ -104,19 +118,22 @@ def addListName(request):
         
 
 
-
+@login_required(login_url='index')
 def addMoviesToList(request):
     user = request.user.id
     profile = Profile.objects.get(user__id = user)
     if request.method == "POST":
         movies = request.POST.getlist('movies')
         list_name = request.POST.get('list_name')
-        print("Hello Am Here")
+        print(list_name)
         print(List.objects.filter(profile=profile).count())
         if List.objects.filter(profile=profile).count() == 0:
             list = List.objects.create(profile = profile, name = 'My List 1')
-        else:    
-            list = List.objects.filter(profile=profile).get(name=list_name)
+        else:
+            if list_name == 'None':  
+                list = List.objects.filter(profile=profile).first()
+            else:
+                list = List.objects.filter(profile=profile).get(name=list_name)
             
 
         print("this is the list")
@@ -182,7 +199,7 @@ def addMoviesToList(request):
     #profile.watched.add(movie)
     #print("added" + f'movie')
     
-    
+@login_required(login_url='index')
 def editListView(request):
     #get list name, get user, get profile, render edit list page
     user = request.user.id
@@ -204,6 +221,7 @@ def editListView(request):
         
 #get User/Profile, Get ListName and New List name from form
 #get List, Update List name to new name, save
+@login_required(login_url='index')
 def updateListName(request):
     user=request.user.id
     profile=Profile.objects.get(user=user)
@@ -229,6 +247,7 @@ def updateListName(request):
 #Delete One Movie From List At a Time And Re Render The List
 #Get User/Profile, Get List and ID from POST form
 # Remove Movie from list, render page.
+@login_required(login_url='index')
 def deleteMovieFromList(request):
     user = request.user.id
     profile = Profile.objects.get(user = user)
@@ -259,6 +278,7 @@ def deleteMovieFromList(request):
 #Delete Entire List and Redirect to Profile
 #Get User/Profile from Request, get Get List name from form
 #Get List object and Delete From Database
+@login_required(login_url='index')
 def deleteList(request):
     user = request.user.id
     profile = Profile.objects.get(user = user)
