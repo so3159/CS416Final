@@ -100,7 +100,7 @@ def view_list(request):
     
     if request.method == 'POST':
         list_name = request.POST['list_name']
-        list=List.objects.get(name= list_name)
+        list=List.objects.filter(profile=profile).get(name= list_name)
         movies = list.movies.all()
         
         context = {
