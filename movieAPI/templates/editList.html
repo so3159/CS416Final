@@ -1,0 +1,109 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+
+{% endblock title %}
+
+{% block body %}
+<form action="{% url 'updateListName' %}"  method="post">
+{% csrf_token %}
+    <div class="row justify-content-center">
+        
+        <div class="col-lg-1">
+            <input type="text" name="list_name" class="invisible" style="height:0px; width:0px;" value="{{list_name}}" >
+        </div>
+        
+        <div class="col-lg-7">
+            
+            <div class="input-group my-2">
+                <input type="search" name="new_list_name" class="form-control border border-2 border-black mr-sm-2" value="{{list_name}}"  aria-label="Search" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                <button class="btn btn-danger btn-lg" type="submit">Update List Name</button>
+                </div>
+            </div> 
+            
+        </div>
+        <div class="col-lg-2">
+            <a href="{% url 'view_profile' %}" class="btn btn-lg btn-danger align-text-bottom my-2 ">Go Back</a>
+        </div>
+    </form>
+        <div class="col-lg-2">
+            <form action="{% url 'deleteList' %}" method="post">
+                {% csrf_token %}
+            <input type="text" name="list_name" class="invisible" style="height:0px; width:0px;" value="{{list_name}}" >
+            <button class="btn btn-lg btn-danger align-text-bottom my-2 " type="submit">Delete List</button>
+            </form>
+        </div>
+        
+    </div>
+
+<div class="row">
+
+
+    {% if list %}
+    {% for movie in list %}
+    <div class="row justify-content-center my-2">
+
+        <div class="col-lg-12">
+            <div class="card border-2 border-danger">                        
+                <div class="card-header">{{movie.title}}<span> : ({{movie.year}})</span></div>
+
+                <div class="row">
+                    <div class="col-lg-2">
+                        <img src="{{movie.Poster}}" class="img-thumbnail border-danger border-3 p-0 m-lg-2" alt="Poster">
+        
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="card-body p-0  m-0">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <ul class="list-group list-group-flush p-0 m-0">
+                                        <li class="list-group-item p-0 m-0"><small>Runtime : {{movie.Runtime}}</small></li>
+                                        <li class="list-group-item font-monospace p-0 m-0 h6"><small>Genres : {{movie.Genres}}</small></li>
+                                        <li class="list-group-item font-monospace p-0 m-0 h6"><small>Directors : {{movie.Directors}}</small></li>
+                                        <li class="list-group-item font-monospace p-0 m-0 h6"><small>Stars : {{movie.Stars}}</small></li>
+                                        <li class="list-group-item font-monospace p-0 m-0 h6"><small>ImBd Rating : {{movie.Rating}}</small></li>
+                                        <li class="list-group-item font-monospace p-0 m-0 h6"><small>Awards : {{movie.Awards}}</small></li>
+
+
+                                        
+                                    </ul>
+                                </div>
+                                <div  class="col-lg-7 p-0">
+                                    <p class="h5 text-center">Plot</p>
+                                    <div style="height:120px;" class="overflow-auto border-1 border border-dark col m-4">
+                                        <p class="font-monospace "><small>{{movie.Plot}}</small></p>
+                                    </div>
+                                    <div class="row m-2 ">
+                                        <div class="offset-8 text-end col-lg-4">
+
+                                            <form action="{% url 'deleteMovieFromList' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="text" name="imbd_id" class="invisible" value="{{movie.imbd_id}}">
+                                                <input type="text" name="list_name" class="invisible" value="{{list_name}}">
+                                                <button class="btn btn-danger">Remove From List</button>
+                                            </form>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endif %}
+</div>
+</div>
+
+{% endblock body %}
+
+
+

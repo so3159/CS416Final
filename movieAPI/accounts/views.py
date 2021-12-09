@@ -11,7 +11,8 @@ from accounts.forms import EditProfileForm, UserRegistrationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from accounts.forms import UserRegistrationForm
-
+from django.contrib import messages
+#messages.info messages.warning messages.success
 
 
 # Create your views here.
@@ -44,6 +45,8 @@ def register_view(request):
 def logout_view(request):
     #Method to logout
     logout(request)
+    messages.warning(request, 'Successfully Logged Out!')
+
     #redirect the user to the index page after logout
     return redirect('index')
 
@@ -59,6 +62,8 @@ def login_view(request):
             print('also here')
             # get the user info from the form data and login the user
             user = form.get_user()
+            messages.success(request, 'Successfully Logged In!')
+
             login(request, user)
             # redirect the user to index page
             return redirect('search')
@@ -66,6 +71,7 @@ def login_view(request):
             return render(request,'accounts/login.html', {'form':form})
     
     form = AuthenticationForm()
+    messages.warning(request, 'Failed To Log In!')
 
     return render(request, 'accounts/login.html', {'form': form})
 
@@ -87,7 +93,8 @@ def view_profile(request):
 def view_list(request):
     user = request.user.id
     profile = Profile.objects.get(user__id = user)
-    lists=List.objects.all().order_by('id').reverse()
+    lists = List.objects.filter(profile=profile).order_by('id').reverse()
+    
     
     
     if request.method == 'POST':
@@ -117,9 +124,13 @@ def edit_profile(request):
             print(profile.user.username)
             #profile.user.save()
             profile.save()
+            print(authenticate(user))
             profile.user.save()
+            messages.success(request, 'Successfully Edited Your Profile!')
+
             context ={
-                'user':profile,
+                'profile':profile,
+                'user':user,
                 'form':form
             }
             return render(request,'accounts/edit_profile.html', context)
@@ -130,7 +141,8 @@ def edit_profile(request):
         #print(profile.user.username)
         context= {
             'form': form,
-            'user': profile,
+            'profile': profile,
+            'user':user
         }
         
         return render(request, 'accounts/edit_profile.html', context)

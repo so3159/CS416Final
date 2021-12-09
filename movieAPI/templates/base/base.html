@@ -30,11 +30,9 @@
                         <a class="nav-link" href="{% url 'search' %}">Home <span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'search' %}">Search</a>
+                        <a class="nav-link" href="{% url 'addListName' %}">Add List Name</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
-                    </li>
+
             <!-- and IF logged in, enable links, ELSE/on logout, disable-->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'view_profile' %}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -43,8 +41,8 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{% url 'view_profile' %}">View Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a></li>
-                                <li class=""><a class="dropdown-item" href="{% url 'login' %}">Sign In</a></li>
-                                <li class=""><a class="dropdown-item" href="{% url 'register' %}">Sign Up</a></li>
+                                <li class=""><a class="dropdown-item {% if user.is_authenticated  %}invisible{% endif %}" href="{% url 'login' %}">Sign In</a></li>
+                                <li class=""><a class="dropdown-item {% if user.is_authenticated  %}invisible{% endif %}" href="{% url 'register' %}">Sign Up</a></li>
                             </ul>
                       </li>
                     <li class="nav-item">
@@ -61,7 +59,20 @@
                 </div>
             </div>
         </nav>
-        <div class="container">          
+        <div class="container">
+            <div class="row">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        {% if message.tags == 'warning' %}
+                        <div role="alert" {% if message.tags %} class="alert alert-danger"{% endif %}>{{ message }}</div>
+                        {% else %}
+                        <div role="alert" {% if message.tags %} class="alert alert-{{message.tags}}"{% endif %}>{{ message }}</div>
+                        {% endif %}
+                        
+                    {% endfor %}
+                {% endif %}
+            </div>          
             {% block body %}
             {% endblock body %}
         </div>
