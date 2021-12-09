@@ -7,8 +7,8 @@ Movie time
 
 {% block body %}
 
-    <div class="row">
-        <div class="col-4 mt-5">
+    <div class="row bottom-element">
+        <div class="col-lg-4 col-sm-12 my-5">
             <div class="card shadow border border-danger border-1  rounded">
                 <div class="card-body">
                     <h1 class='text-center'>View Profile:</h1>
@@ -64,7 +64,7 @@ Movie time
                 </div>
             </div>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-8 bottom-element">
             <div class="row {% if not lists  %}  invisible {% endif %}">
                 <form action="{% url 'view_list' %}" method="post">
                     {% csrf_token %}
@@ -134,10 +134,6 @@ Movie time
         {% endif %}
             
         </div>
-    </div>
-
-    <div class="row justify-content-center my-3">
-        
     </div>
 
 {% endblock body %}
